@@ -6,54 +6,78 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 12:38:06 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/22 13:32:13 by izperez          ###   ########.fr       */
+/*   Updated: 2024/05/27 12:15:20 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//creates the struct data
-void	create_struct_data(t_table *data, char **av)
+//init the vaues of the struct data
+void	init_data(t_table *data, char ac,char **av)
 {
-	data = malloc(sizeof(t_table));
-	if (data != NULL)
-	{
-		data->nbr_philo = ft_atoi(av[1]);
-		data->time_to_die = ft_atoi(av[2]);
-		data->time_to_eat = ft_atoi(av[3]);
-		data->time_to_sleep = ft_atoi(av[4]);
+	data->nbr_philo = ft_atoi(av[1]);
+	data->time_to_die = ft_atoi(av[2]);
+	data->time_to_eat = ft_atoi(av[3]);
+	data->time_to_sleep = ft_atoi(av[4]);
+	if (ac == 6)
 		data->nbr_eat = ft_atoi(av[5]);
-		data->end_flag = 0;
-		data->start_flag = 0;
-	}
-	return (NULL);
+	else
+		data->nbr_eat = -1;
+	data->end_flag = 0;
+	data->start_flag = 0;
+	pthread_mutex_init(&data->mutex, NULL);
 }
 
 //create the struct of the philo
-void	create_struct_philo(t_philo *philo)
+void	create_struct_philo(t_table *table)
 {
-	t_philo	*new_philo;
-	t_philo	*last_philo;
-	
-	philo = malloc(sizeof(t_philo));
-	if (philo == NULL)
-		return (NULL);
-	if (philo == NULL)
+	int		i;
+	t_philo	*philo;
+
+	i = 0;
+	table->philos = malloc(sizeof(t_philo) * table->nbr_philo);
+	if (table->philos == NULL)
+		return ;
+	philo = &table->philos[i];
+	while (i < table->nbr_philo)
 	{
-		new_philo = philo;
-		philo->next = NULL;
-		philo->prev == NULL;
+		philo->id = i + 1;
+		philo->meals = 0;
+		philo->last_meal = 0;
+		philo->table = table;
+		philo->fork = malloc(sizeof(pthread_mutex_t));
+		if (philo->fork == NULL)
+			return ;
+		pthread_mutex_init(philo->fork, NULL);
+		if (i < table->nbr_philo)
+		{
+			philo->prev = &table->philos[i - 1];
+			table->philos[i - 1].next = philo;
+			i++;
+		}
 	}
-	else
-	{
-		last_philo = ft_last_node(philo);
-	}
-	philo->id = 0;
-	philo->times_eat = 0;
-	philo->last_meal = 0;
-	philo->fork == NULL;
+	table->philos[0].prev = &table->philos[table->nbr_philo - 1];
+	table->philos[table->nbr_eat-1].next = &table->philos[0];
 }
 
-// void	init_struct_data();
+//monitor philos status
+void	monitoring_philo(t_table *table)
+{
+	int	i;
 
-// void	init_struct_philo();
+	i = 0;
+	while (!table->end_flag)
+	{
+		while (i < table->nbr_philo)
+		{
+			if (get_current_time() - table->philos[i].last_meal > (size_t)table->time_to_die)
+			{
+				log_status(&table->philos[i], "philo has died");
+				table->end_flag = 1;
+				return ;
+			}
+			i++;
+		}
+		usleep(1000);
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:43:26 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/22 13:46:30 by izperez          ###   ########.fr       */
+/*   Updated: 2024/05/23 11:56:24 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,25 @@ void	error_check(t_table *table, char **av)
 	table->time_to_eat = new_atol(av[3]) * 1000;
 	table->time_to_sleep = new_atol(av[4]) * 1000;
 	if (table->time_to_die < 60000 || table->time_to_eat < 60000 || table->time_to_sleep < 60000)
-		print_exit("Error timestamps");
+		print_exit("Error times");
 	if (av[5])
 		table->nbr_eat = new_atol(av[5]);
 	else
 		table->nbr_eat = -1;
-}		
+}
+
+//join to end the program, all destroy
+void	cleanup(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->nbr_philo)
+	{
+		pthread_join(table->philos[i].thread, NULL);
+		pthread_mutex_destroy(table->philos[i].fork);
+		free(table->philos[i].fork);
+	}
+	pthread_mutex_destroy(&table->mutex);
+	free(table->philos);
+}

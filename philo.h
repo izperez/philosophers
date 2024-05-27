@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:48:52 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/22 13:40:17 by izperez          ###   ########.fr       */
+/*   Updated: 2024/05/23 13:40:43 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,41 @@ typedef struct s_table
 	int					nbr_eat;
 	int					end_flag;
 	int					start_flag;
-	t_philo				*philos;
+	pthread_mutex_t		mutex;
+	struct s_philo		*philos;
 }					t_table;
 
 typedef struct s_philo
 {
 	int				id;
-	int				times_eat;
+	int				meals;
 	size_t			last_meal;
 	struct s_philo	*next;
 	struct s_philo	*prev;
 	struct s_table	*data;
 	pthread_mutex_t	*fork;
-	t_table			*table;
+	struct s_table	*table;
+	pthread_t		thread;
 }					t_philo;
+
+//main.c
+void	philo_routine(t_philo *philo);
+void	start_simulation(t_table *table);
+void	end_simulation(t_table *table);
 
 //parse.c
 void	error_check(t_table *table, char **av);
+void	cleanup(t_table *table);
 
 //utils.c
 void	print_exit(const char *msg);
-t_philo	*ft_last_node(t_table *data);
-void	ft_malloc(size_t item);
+size_t	get_current_time(void);
+void	log_status(t_philo *philo, char *status);
 
 //init_struct.c
-void	create_struct_data(t_table *data, char **av);
-void	create_struct_philo(t_philo *philo);
-
-
-
+void	init_data(t_table *data, char ac, char **av);
+void	create_struct_philo(t_table *table);
+void	monitoring_philo(t_table *table);
 
 
 

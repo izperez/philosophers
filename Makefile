@@ -6,14 +6,14 @@
 #    By: izperez <izperez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/09 12:48:04 by izperez           #+#    #+#              #
-#    Updated: 2024/05/22 12:35:58 by izperez          ###   ########.fr        #
+#    Updated: 2024/05/27 12:17:58 by izperez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 INCLUDE = philo.h
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -pthread -g3 -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -pthread #-g3 -fsanitize=address
 RM = rm -f
 
 LIBFT_DIR = libft/
@@ -34,7 +34,7 @@ $(LIBFT):
 
 clean:
 			make -C $(LIBFT_DIR) fclean
-flcean: clean
+fclean: clean
 			$(RM) $(NAME)
 
 re: flcean all $(LIBFT)
