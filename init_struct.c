@@ -6,13 +6,12 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 12:38:06 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/27 12:15:20 by izperez          ###   ########.fr       */
+/*   Updated: 2024/05/28 11:56:26 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//init the vaues of the struct data
 void	init_data(t_table *data, char ac,char **av)
 {
 	data->nbr_philo = ft_atoi(av[1]);
@@ -28,7 +27,6 @@ void	init_data(t_table *data, char ac,char **av)
 	pthread_mutex_init(&data->mutex, NULL);
 }
 
-//create the struct of the philo
 void	create_struct_philo(t_table *table)
 {
 	int		i;
@@ -36,6 +34,7 @@ void	create_struct_philo(t_table *table)
 
 	i = 0;
 	table->philos = malloc(sizeof(t_philo) * table->nbr_philo);
+	usleep(5);
 	if (table->philos == NULL)
 		return ;
 	philo = &table->philos[i];
@@ -60,7 +59,6 @@ void	create_struct_philo(t_table *table)
 	table->philos[table->nbr_eat-1].next = &table->philos[0];
 }
 
-//monitor philos status
 void	monitoring_philo(t_table *table)
 {
 	int	i;

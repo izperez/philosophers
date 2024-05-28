@@ -6,7 +6,7 @@
 #    By: izperez <izperez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/09 12:48:04 by izperez           #+#    #+#              #
-#    Updated: 2024/05/27 12:17:58 by izperez          ###   ########.fr        #
+#    Updated: 2024/05/28 11:35:12 by izperez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,4 +37,4 @@ clean:
 fclean: clean
 			$(RM) $(NAME)
 
-re: flcean all $(LIBFT)
+re: fclean all $(LIBFT)

@@ -6,16 +6,12 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:43:26 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/23 11:56:24 by izperez          ###   ########.fr       */
+/*   Updated: 2024/05/28 11:36:56 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* 1. Check negatives
- * 2. Check rare symbols
- * 3. Check INT_MAX/MIN
- */
 static const char	*valid_input(const char *str)
 {
 	int			len;
@@ -54,9 +50,6 @@ static long	new_atol(const char *str)
 	return (num);
 }
 
-/* 1. Numbers
- * 2. Int max
- * 3. Timestamp > 60ms */
 void	error_check(t_table *table, char **av)
 {
 	table->nbr_philo = new_atol(av[1]);
@@ -71,7 +64,6 @@ void	error_check(t_table *table, char **av)
 		table->nbr_eat = -1;
 }
 
-//join to end the program, all destroy
 void	cleanup(t_table *table)
 {
 	int	i;
@@ -85,4 +77,13 @@ void	cleanup(t_table *table)
 	}
 	pthread_mutex_destroy(&table->mutex);
 	free(table->philos);
+}
+
+void	ft_free_philo(t_table *table)
+{
+	if (table->philos)
+	{
+		free (table->philos);
+		table->philos = NULL;
+	}
 }

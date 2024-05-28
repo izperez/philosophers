@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:48:52 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/23 13:40:43 by izperez          ###   ########.fr       */
+/*   Updated: 2024/05/28 11:34:40 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include "libft/libft.h"
 #include <sys/time.h>
+#include <unistd.h>
 
 typedef struct s_philo t_philo;
 
@@ -53,11 +54,13 @@ void	end_simulation(t_table *table);
 //parse.c
 void	error_check(t_table *table, char **av);
 void	cleanup(t_table *table);
+void	ft_free_philo(t_table *table);
 
 //utils.c
 void	print_exit(const char *msg);
 size_t	get_current_time(void);
 void	log_status(t_philo *philo, char *status);
+void	ft_usleep(__useconds_t milisec);
 
 //init_struct.c
 void	init_data(t_table *data, char ac, char **av);
