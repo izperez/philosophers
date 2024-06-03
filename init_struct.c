@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 12:38:06 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/03 12:00:29 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/03 12:49:51 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_data(t_table *data, char ac,char **av)
 	else
 		data->nbr_eat = -1;
 	data->end_flag = 0;
-	data->start_flag = 0;
+	data->start_flag = get_current_time();
 	data->fork = malloc(sizeof(pthread_mutex_t) * data->nbr_philo);
 	if (data->fork == NULL)
 		return ;

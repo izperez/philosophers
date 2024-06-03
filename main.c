@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:48:49 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/03 12:36:43 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/03 13:53:09 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,12 @@
 void *philo_routine(void *arg)
 {
 	t_philo *philo;
-	//(void)arg;
 	philo = (t_philo *)arg;
 
-	printf("el fide es el : %i\n", philo->id);
 	while (1)
 	{
-		printf("tamo en el while\n");
 		if (philo->table->nbr_philo % 2 == 0)
-			usleep(10);
-		printf("seguimo en el while\n");
-		printf("right fork: %p\n", philo->table->fork[philo->rigth_fork]);
+			ft_usleep(100);
 		pthread_mutex_lock(&philo->table->fork[philo->rigth_fork]);
 		log_status(philo, "philo has taken a fork");
 		pthread_mutex_lock(&philo->table->fork[philo->left_fork]);
@@ -48,11 +43,9 @@ void start_simulation(t_philo *philo)
 	int i;
 
 	i = 0;
-	
-	//getchar();
+
 	while (i < philo->table->nbr_philo)
 	{
-		printf("start simulation %i\n", i);
 		if (pthread_create(philo[i].table->thread, NULL, &philo_routine, &philo[i]) != 0)
 			print_exit("ERROR\n");
 		i++;
@@ -85,9 +78,8 @@ int main(int ac, char **av)
 	
 	init_data(&table, ac, av);
 	philo = create_struct_philo(philo, &table);
-
-	//getchar();
 	start_simulation(philo);
 	cleanup2(philo);
+	end_simulation(&table);
 	return (0);
 }

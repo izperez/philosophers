@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:43:26 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/03 12:19:34 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/03 13:29:24 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static long	new_atol(const char *str)
 	str = valid_input(str);
 	while (ft_isdigit(*str))
 	{
-		num = (num *  10) + (*str - '0');
+		num = (num * 10) + (*str - '0');
 		str++;
 	}
 	if (num > INT_MAX || num < INT_MIN)
@@ -56,7 +56,8 @@ void	error_check(t_table *table, char **av)
 	table->time_to_die = new_atol(av[2]) * 1000;
 	table->time_to_eat = new_atol(av[3]) * 1000;
 	table->time_to_sleep = new_atol(av[4]) * 1000;
-	if (table->time_to_die < 60000 || table->time_to_eat < 60000 || table->time_to_sleep < 60000)
+	if (table->time_to_die < 60000 || table->time_to_eat < 60000
+		|| table->time_to_sleep < 60000)
 		print_exit("Error times");
 	if (av[5])
 		table->nbr_eat = new_atol(av[5]);
@@ -74,20 +75,19 @@ void	cleanup(t_table *table)
 		printf("i %i\n", i);
 		pthread_join(table->thread[i], NULL);
 		pthread_mutex_destroy(table->fork);
-		//free(table->fork);
+		// free(table->fork);
 		i++;
 	}
 	pthread_mutex_destroy(&table->mutex);
-	//free(table->thread);
+	// free(table->thread);
 }
 
-void cleanup2(t_philo *philo)
+void	cleanup2(t_philo *philo)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	
-	//getchar();
+	// getchar();
 	while (i < philo->table->nbr_philo)
 	{
 		printf("clean simulation %i\n", i);
@@ -101,7 +101,7 @@ void	ft_free_philo(t_table *table)
 {
 	if (table->thread)
 	{
-		free (table->thread);
+		free(table->thread);
 		table->thread = NULL;
 	}
 }
