@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:43:26 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/28 11:36:56 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/03 12:19:34 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,37 @@ void	cleanup(t_table *table)
 	i = 0;
 	while (i < table->nbr_philo)
 	{
-		pthread_join(table->philos[i].thread, NULL);
-		pthread_mutex_destroy(table->philos[i].fork);
-		free(table->philos[i].fork);
+		printf("i %i\n", i);
+		pthread_join(table->thread[i], NULL);
+		pthread_mutex_destroy(table->fork);
+		//free(table->fork);
+		i++;
 	}
 	pthread_mutex_destroy(&table->mutex);
-	free(table->philos);
+	//free(table->thread);
+}
+
+void cleanup2(t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	
+	//getchar();
+	while (i < philo->table->nbr_philo)
+	{
+		printf("clean simulation %i\n", i);
+		if (pthread_join(*(philo[i].table->thread), NULL) != 0)
+			print_exit("ERROR\n");
+		i++;
+	}
 }
 
 void	ft_free_philo(t_table *table)
 {
-	if (table->philos)
+	if (table->thread)
 	{
-		free (table->philos);
-		table->philos = NULL;
+		free (table->thread);
+		table->thread = NULL;
 	}
 }

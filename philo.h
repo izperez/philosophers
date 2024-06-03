@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:48:52 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/28 11:34:40 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/03 12:26:51 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "libft/libft.h"
 #include <sys/time.h>
 #include <unistd.h>
+#include <string.h>
 
 typedef struct s_philo t_philo;
 
@@ -30,7 +31,8 @@ typedef struct s_table
 	int					end_flag;
 	int					start_flag;
 	pthread_mutex_t		mutex;
-	struct s_philo		*philos;
+	pthread_mutex_t		*fork;
+	pthread_t			*thread;
 }					t_table;
 
 typedef struct s_philo
@@ -38,23 +40,21 @@ typedef struct s_philo
 	int				id;
 	int				meals;
 	size_t			last_meal;
-	struct s_philo	*next;
-	struct s_philo	*prev;
-	struct s_table	*data;
-	pthread_mutex_t	*fork;
+	int				rigth_fork;
+	int				left_fork;
 	struct s_table	*table;
-	pthread_t		thread;
 }					t_philo;
 
 //main.c
-void	philo_routine(t_philo *philo);
-void	start_simulation(t_table *table);
+void	*philo_routine(void *arg);
+void	start_simulation(t_philo *philo);
 void	end_simulation(t_table *table);
 
 //parse.c
 void	error_check(t_table *table, char **av);
 void	cleanup(t_table *table);
 void	ft_free_philo(t_table *table);
+void	cleanup2(t_philo *philo);
 
 //utils.c
 void	print_exit(const char *msg);
@@ -64,8 +64,8 @@ void	ft_usleep(__useconds_t milisec);
 
 //init_struct.c
 void	init_data(t_table *data, char ac, char **av);
-void	create_struct_philo(t_table *table);
-void	monitoring_philo(t_table *table);
+t_philo	*create_struct_philo(t_philo *philo, t_table *table);
+void	monitoring_philo(t_philo *philo, t_table *table);
 
 
 

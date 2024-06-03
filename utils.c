@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:47:25 by izperez           #+#    #+#             */
-/*   Updated: 2024/05/28 11:37:24 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/03 12:30:30 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	log_status(t_philo *philo, char *status)
 {
 	long	time_date_i;
 	
-	time_date_i = get_current_time() - philo->data->start_flag;
+	time_date_i = get_current_time() - philo->table->start_flag;
 	pthread_mutex_lock(&philo->table->mutex);
 	ft_printf("%zu %d %s\n", time_date_i, philo->id, status);
 	pthread_mutex_unlock(&philo->table->mutex);
