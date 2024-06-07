@@ -20,7 +20,6 @@ void	print_exit(const char *msg)
 
 long int get_current_time(void)
 {
-	
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
@@ -37,19 +36,16 @@ void	log_status(t_philo *philo, char *status)
 	pthread_mutex_unlock(&philo->table->mutex);
 }
 
-void	ft_usleep(__useconds_t milisec)
+void	ft_usleep(long milisec)
 {
-	// __useconds_t	now;
-	// __useconds_t	then;
+	long	start;
 
-	// now = get_current_time();
-	// then = get_current_time();
-	// while (then - now < milisec)
-	// {
-	// 	usleep(100);
-	// 	then = get_current_time();
-	// }
-	usleep(milisec * 100);
+	start = get_current_time();
+	while (999)
+	{
+		if (get_current_time() - milisec >= start)
+			break ;
+		usleep(100);
+	}
 }
-
 

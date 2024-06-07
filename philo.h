@@ -65,7 +65,7 @@ void					cleanup2(t_philo *philo);
 void					print_exit(const char *msg);
 long int				get_current_time(void);
 void					log_status(t_philo *philo, char *status);
-void					ft_usleep(__useconds_t milisec);
+void					ft_usleep(long milisec);
 
 // init_struct.c
 void					init_data(t_table *data, char ac, char **av);

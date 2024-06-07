@@ -17,10 +17,11 @@ void *philo_routine(void *arg)
 	t_philo *philo;
 	philo = (t_philo *)arg;
 
-	while (1)
+	while (philo->table->end_flag == 0)
 	{
 		if (philo->id % 2 == 0)
-			ft_usleep(100);
+			ft_usleep(20);
+
 		pthread_mutex_lock(&philo->table->fork[philo->rigth_fork]);
 		log_status(philo, "philo has taken a fork");
 		pthread_mutex_lock(&philo->table->fork[philo->left_fork]);
@@ -39,12 +40,6 @@ void *philo_routine(void *arg)
 			philo->full = 1;
 			philo->table->end_flag = 1;
 		}
-		else if (get_current_time() - philo->last_meal > philo->table->time_to_die)
-		{
-			log_status(philo, "philo has died");
-			philo->table->end_flag = 1;
-			philo->dead = 1;
-		}
 	}
 	return (NULL);
 }
@@ -60,14 +55,14 @@ void start_simulation(t_philo *philo)
 		if (pthread_create(philo[i].table->thread, NULL, &philo_routine, &philo[i]) != 0)
 			print_exit("ERROR");
 		i++;
-		if (pthread_create(&monitor, NULL, monitoring_philo, philo) != 0)
+	}
+ 		if (pthread_create(&monitor, NULL, monitoring_philo, philo) != 0)
 			print_exit("ERROR");
 		pthread_join(monitor, NULL);
 		if (philo->dead == 1)
 			print_exit("philo has died");
 		else if (philo->full == 1)
 			print_exit("philo is full");
-	}
 }
 
 void end_simulation(t_table *table)

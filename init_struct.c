@@ -62,22 +62,28 @@ t_philo	*create_struct_philo(t_philo *philo, t_table *table)
 
 void	*monitoring_philo(void *args)
 {
-	int	i;
-	t_philo	*philo;
+	int				i;
+	t_philo			*philo;
+	pthread_mutex_t	death;
 
 	i = 0;
 	philo = (t_philo *)args;
 	while (!philo->table->end_flag)
 	{
+		i = 0;
 		while (i < philo->table->nbr_philo)
 		{
-			if (get_current_time() - philo->last_meal > philo->table->time_to_die)
+			pthread_mutex_lock(&death);
+			if (get_current_time() - philo[i].last_meal > philo->table->time_to_die)
 			{
 				log_status(philo, "philo has died");
-				philo->table->end_flag = 1;
+				philo->dead = 1;
+				pthread_mutex_unlock(&death);
+				break ;
 			}
 			i++;
 		}
+		pthread_mutex_unlock(&death);
 		usleep(1000);
 	}
 	return (NULL);
