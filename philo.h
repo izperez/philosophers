@@ -18,15 +18,18 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <limits.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 typedef struct s_philo	t_philo;
 
 typedef struct s_table
 {
 	int					nbr_philo;
-	int					time_to_die;
-	int					time_to_sleep;
-	int					time_to_eat;
+	long				time_to_die;
+	long				time_to_sleep;
+	long				time_to_eat;
 	int					nbr_eat;
 	long				end_flag;
 	long				start_flag;
@@ -39,9 +42,11 @@ typedef struct s_philo
 {
 	int					id;
 	int					meals;
-	size_t				last_meal;
+	long				last_meal;
 	int					rigth_fork;
 	int					left_fork;
+	int					dead;
+	int					full;
 	struct s_table		*table;
 }						t_philo;
 
@@ -65,6 +70,6 @@ void					ft_usleep(__useconds_t milisec);
 // init_struct.c
 void					init_data(t_table *data, char ac, char **av);
 t_philo					*create_struct_philo(t_philo *philo, t_table *table);
-void					monitoring_philo(t_philo *philo, t_table *table);
+void					*monitoring_philo(void *args);
 
 #endif

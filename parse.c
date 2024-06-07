@@ -75,11 +75,9 @@ void	cleanup(t_table *table)
 		printf("i %i\n", i);
 		pthread_join(table->thread[i], NULL);
 		pthread_mutex_destroy(table->fork);
-		// free(table->fork);
 		i++;
 	}
 	pthread_mutex_destroy(&table->mutex);
-	// free(table->thread);
 }
 
 void	cleanup2(t_philo *philo)
@@ -87,21 +85,10 @@ void	cleanup2(t_philo *philo)
 	int	i;
 
 	i = 0;
-	// getchar();
 	while (i < philo->table->nbr_philo)
 	{
-		printf("clean simulation %i\n", i);
 		if (pthread_join(*(philo[i].table->thread), NULL) != 0)
 			print_exit("ERROR\n");
 		i++;
-	}
-}
-
-void	ft_free_philo(t_table *table)
-{
-	if (table->thread)
-	{
-		free(table->thread);
-		table->thread = NULL;
 	}
 }
