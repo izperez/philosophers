@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:48:52 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/03 13:47:37 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/14 10:46:19 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_philo
 	int					id;
 	int					meals;
 	long				last_meal;
-	int					rigth_fork;
+	int					right_fork;
 	int					left_fork;
 	int					dead;
 	int					full;
@@ -57,9 +57,8 @@ void					end_simulation(t_table *table);
 
 // parse.c
 void					error_check(t_table *table, char **av);
-void					cleanup(t_table *table);
 void					ft_free_philo(t_table *table);
-void					cleanup2(t_philo *philo);
+void					cleanup(t_philo *philo);
 
 // utils.c
 void					print_exit(const char *msg);

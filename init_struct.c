@@ -6,13 +6,13 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 12:38:06 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/03 12:49:51 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/14 10:39:50 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_data(t_table *data, char ac,char **av)
+void	init_data(t_table *data, char ac, char **av)
 {
 	int	i;
 
@@ -30,9 +30,13 @@ void	init_data(t_table *data, char ac,char **av)
 	data->fork = malloc(sizeof(pthread_mutex_t) * data->nbr_philo);
 	if (data->fork == NULL)
 		return ;
-	while(i < data->nbr_philo)
-		if(pthread_mutex_init(&data->fork[i++], NULL) == -1)
+	while (i < data->nbr_philo)
+		if (pthread_mutex_init(&data->fork[i++], NULL) == -1)
 			print_exit("Error\n");
+	data->thread = malloc(sizeof(pthread_t) * data->nbr_philo);
+	if (data->thread == NULL)
+		return ;
+	pthread_mutex_init(&data->mutex, NULL);
 }
 
 t_philo	*create_struct_philo(t_philo *philo, t_table *table)
@@ -40,9 +44,7 @@ t_philo	*create_struct_philo(t_philo *philo, t_table *table)
 	int		i;
 
 	i = 0;
-	philo = malloc(sizeof(t_philo)* table->nbr_philo);
-	table->thread = malloc(sizeof(pthread_t) * table->nbr_philo);
-	pthread_mutex_init(&table->mutex,NULL);
+	philo = malloc(sizeof(t_philo) * table->nbr_philo);
 	if (philo == NULL)
 		return (philo);
 	while (i < table->nbr_philo)
@@ -51,7 +53,7 @@ t_philo	*create_struct_philo(t_philo *philo, t_table *table)
 		philo[i].meals = 0;
 		philo[i].last_meal = get_current_time();
 		philo[i].table = table;
-		philo[i].rigth_fork = i;
+		philo[i].right_fork = i;
 		philo[i].left_fork = (i + 1) % table->nbr_philo;
 		philo[i].dead = 0;
 		philo[i].full = 0;
@@ -64,7 +66,6 @@ void	*monitoring_philo(void *args)
 {
 	int				i;
 	t_philo			*philo;
-	pthread_mutex_t	death;
 
 	i = 0;
 	philo = (t_philo *)args;
@@ -73,17 +74,18 @@ void	*monitoring_philo(void *args)
 		i = 0;
 		while (i < philo->table->nbr_philo)
 		{
-			pthread_mutex_lock(&death);
-			if (get_current_time() - philo[i].last_meal > philo->table->time_to_die)
+			pthread_mutex_lock(&philo->table->mutex);
+			if (get_current_time() - philo[i].last_meal
+				> philo->table->time_to_die)
 			{
-				log_status(philo, "philo has died");
-				philo->dead = 1;
-				pthread_mutex_unlock(&death);
-				break ;
+				log_status(&philo[i], "philo has died");
+				philo->table->end_flag = 1;
+				pthread_mutex_unlock(&philo->table->mutex);
+				return (NULL);
 			}
+			pthread_mutex_unlock(&philo->table->mutex);
 			i++;
 		}
-		pthread_mutex_unlock(&death);
 		usleep(1000);
 	}
 	return (NULL);

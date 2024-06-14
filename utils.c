@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:47:25 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/03 13:44:13 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/14 10:45:40 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_exit(const char *msg)
 	exit(EXIT_FAILURE);
 }
 
-long int get_current_time(void)
+long int	get_current_time(void)
 {
 	struct timeval	time;
 
@@ -29,7 +29,7 @@ long int get_current_time(void)
 void	log_status(t_philo *philo, char *status)
 {
 	long	time_date_i;
-	
+
 	time_date_i = get_current_time() - philo->table->start_flag;
 	pthread_mutex_lock(&philo->table->mutex);
 	printf("%ld %d %s\n", time_date_i, philo->id, status);
@@ -41,11 +41,10 @@ void	ft_usleep(long milisec)
 	long	start;
 
 	start = get_current_time();
-	while (999)
+	while (1)
 	{
 		if (get_current_time() - milisec >= start)
 			break ;
 		usleep(100);
 	}
 }
-
