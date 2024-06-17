@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 12:38:06 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/14 10:39:50 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/17 12:29:03 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,15 @@ void	*monitoring_philo(void *args)
 		i = 0;
 		while (i < philo->table->nbr_philo)
 		{
-			pthread_mutex_lock(&philo->table->mutex);
 			if (get_current_time() - philo[i].last_meal
-				> philo->table->time_to_die)
+				> philo->table->time_to_die && !philo->table->end_flag)
 			{
 				log_status(&philo[i], "philo has died");
 				philo->table->end_flag = 1;
-				pthread_mutex_unlock(&philo->table->mutex);
 				return (NULL);
 			}
-			pthread_mutex_unlock(&philo->table->mutex);
 			i++;
 		}
-		usleep(1000);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:48:49 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/14 10:45:17 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/17 12:34:40 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static void	philo_routine_aux(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
-		ft_usleep(20);
+		ft_usleep(10);
 	pthread_mutex_lock(&philo->table->fork[philo->right_fork]);
-	log_status(philo, "philo has taken a fork");
+	log_status(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->table->fork[philo->left_fork]);
-	log_status(philo, "philo has taken a fork");
-	log_status(philo, "philo is eating");
+	log_status(philo, "has taken a fork");
+	log_status(philo, "is eating");
 }
 
 void	*philo_routine(void *arg)
@@ -36,13 +36,12 @@ void	*philo_routine(void *arg)
 		philo->meals++;
 		pthread_mutex_unlock(&philo->table->fork[philo->right_fork]);
 		pthread_mutex_unlock(&philo->table->fork[philo->left_fork]);
-		log_status(philo, "philo is sleepping");
+		log_status(philo, "is sleeping");
 		ft_usleep(philo->table->time_to_sleep);
-		log_status(philo, "philo is thinking");
+		log_status(philo, "is thinking");
 		if (philo->meals == philo->table->nbr_eat)
 		{
 			philo->full = 1;
-			philo->table->end_flag = 1;
 			break ;
 		}
 	}
@@ -72,10 +71,8 @@ void	start_simulation(t_philo *philo)
 			print_exit("ERROR");
 		i++;
 	}
-	if (philo->dead == 1)
-		print_exit("philo has died");
-	else if (philo->full == 1)
-		print_exit("philo is full");
+	if (philo->full == 1)
+		printf("%d is full\n", philo->id);
 }
 
 void	end_simulation(t_table *table)

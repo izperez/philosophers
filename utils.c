@@ -6,7 +6,7 @@
 /*   By: izperez <izperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:47:25 by izperez           #+#    #+#             */
-/*   Updated: 2024/06/14 10:45:40 by izperez          ###   ########.fr       */
+/*   Updated: 2024/06/17 12:34:15 by izperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	log_status(t_philo *philo, char *status)
 
 	time_date_i = get_current_time() - philo->table->start_flag;
 	pthread_mutex_lock(&philo->table->mutex);
-	printf("%ld %d %s\n", time_date_i, philo->id, status);
+	if (philo->table->end_flag == 0)
+		printf("%ld %d %s\n", time_date_i, philo->id, status);
 	pthread_mutex_unlock(&philo->table->mutex);
 }
 
@@ -45,6 +46,6 @@ void	ft_usleep(long milisec)
 	{
 		if (get_current_time() - milisec >= start)
 			break ;
-		usleep(100);
+		usleep(50);
 	}
 }
